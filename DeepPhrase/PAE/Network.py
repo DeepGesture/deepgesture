@@ -41,7 +41,6 @@ if __name__ == '__main__':
 
 
     # End Parameter Section
-
     def LoadBatches(sequences):
         gather = gather_window.reshape(1, -1).repeat(sequences.shape[0], 0)
 
