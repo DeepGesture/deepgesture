@@ -66,13 +66,13 @@ if __name__ == '__main__':
         return value.detach().cpu()
 
 
-    Load = "Dataset"
-    Save = "Training"
-    utility.MakeDirectory(Save)
+    InputDir = "Input"
+    OutputDir = "Output"
+    utility.MakeDirectory(OutputDir)
 
-    Data = Load + "/Data.txt" # "/Data.bin"
-    Shape = utility.LoadTxtAsInt(Load + "/DataShape.txt")
-    Sequences = utility.LoadSequences(Load + "/Sequences.txt", True, Shape[0])
+    Data = InputDir + "/Data.bin"
+    Shape = utility.LoadTxtAsInt(InputDir + "/DataShape.txt")
+    Sequences = utility.LoadSequences(InputDir + "/Sequences.txt", True, Shape[0])
 
     # Sequences = utility.LoadSequences(Path+"/Sequences.txt", True, 100000)
     # Sequences = Sequences[np.where(Sequences == 1)]
@@ -229,7 +229,7 @@ if __name__ == '__main__':
 
             # End Visualization Section
 
-        torch.save(network, Save + "/" + str(epoch + 1) + "_" + str(phase_channels) + "Channels" + ".pt")
+        torch.save(network, OutputDir + "/" + str(epoch + 1) + "_" + str(phase_channels) + "Channels" + ".pt")
 
         print('Epoch', epoch + 1, loss_history.CumulativeValue())
         fig1.savefig(f'figure1.png')
@@ -241,7 +241,7 @@ if __name__ == '__main__':
         print("Saving Parameters")
         network.eval()
         E = np.arange(sample_count)
-        with open(Save + '/Parameters_' + str(epoch + 1) + '.txt', 'w') as file:
+        with open(OutputDir + '/Parameters_' + str(epoch + 1) + '.txt', 'w') as file:
             for i in range(0, sample_count, batch_size):
                 utility.PrintProgress(i, sample_count)
                 eval_indices = E[i:i + batch_size]
