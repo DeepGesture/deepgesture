@@ -99,22 +99,22 @@ class ExpertLinear(torch.nn.Module):
 
 if __name__ == '__main__':
 
-    load = "Data"
-    gating_indices = torch.tensor([(2486 + i) for i in range(130)])
-    main_indices = torch.tensor([(0 + i) for i in range(2486)])
+    InputDir = "Input"
+    gating_indices = torch.tensor([(15014 + i) for i in range(208)])
+    main_indices = torch.tensor([(0 + i) for i in range(15014)])
 
-    save = "./Training"
+    OutputDir = "./Output"
 
-    # InputFile = load + "/Input.bin"
-    # OutputFile = load + "/Output.bin"
-    InputFile = load + "/Input.txt"
-    OutputFile = load + "/Output.txt"
+    InputFile = InputDir + "/Input.bin"
+    OutputFile = InputDir + "/Output.bin"
+    # InputFile = InputDir + "/Input.txt"
+    # OutputFile = InputDir + "/Output.txt"
     # InputFile = utility.ReadBinary(InputFile, sample_count, input_dim)
     # OutputFile = utility.ReadBinary(OutputFile, sample_count, output_dim)
-    Xshape = utility.LoadTxtAsInt(load + "/InputShape.txt", True)
-    Yshape = utility.LoadTxtAsInt(load + "/OutputShape.txt", True)
-    Xnorm = utility.LoadTxt(load + "/InputNormalization.txt", True)
-    Ynorm = utility.LoadTxt(load + "/OutputNormalization.txt", True)
+    Xshape = utility.LoadTxtAsInt(InputDir + "/InputShape.txt", True)
+    Yshape = utility.LoadTxtAsInt(InputDir + "/OutputShape.txt", True)
+    Xnorm = utility.LoadTxt(InputDir + "/InputNormalization.txt", True)
+    Ynorm = utility.LoadTxt(InputDir + "/OutputNormalization.txt", True)
 
     utility.SetSeed(23456)
 
@@ -161,8 +161,8 @@ if __name__ == '__main__':
             print('Progress', round(100 * i / sample_count, 2), "%", end="\r")
             train_indices = I[i:i + batch_size]
 
-            xBatch = utility.ReadBatchFromFile(InputFile, train_indices, input_dim)
-            yBatch = utility.ReadBatchFromFile(OutputFile, train_indices, output_dim)
+            xBatch = utility.ReadBinaryBatchFromFile(InputFile, train_indices, input_dim)
+            yBatch = utility.ReadBinaryBatchFromFile(OutputFile, train_indices, output_dim)
             # xBatch = utility.ReadBatchFromMatrix(InputFile, train_indices)
             # yBatch = utility.ReadBatchFromMatrix(OutputFile, train_indices)
 
@@ -179,7 +179,7 @@ if __name__ == '__main__':
         # network = utility.ToCPU(network)
         print("Saving ONNX: ", epoch)
         utility.SaveONNX(
-            path=save + '/' + str(epoch + 1) + '.onnx',
+            path=OutputDir + '/' + str(epoch + 1) + '.onnx',
             model=utility.ToCPU(network),
             input_size=input_dim,
             input_names=['X'],

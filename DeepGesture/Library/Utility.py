@@ -287,16 +287,15 @@ def ReadDataText(textFile, sampleCount, featureCount):
 # binaryFile = .bin data matrix of shape samples x features
 # sampleIndices = list of sample indices from 0
 # featureCount = number of features per sample
-# def ReadBatchFromFile(binaryFile, sampleIndices, featureCount):
-#     bytesPerLine = featureCount * 4
-#     data = np.empty([len(sampleIndices), featureCount], dtype=np.float32)
-#     # with open(binaryFile, "rb") as f:
-#     with open(binaryFile, "r") as f:
-#         for i in range(len(sampleIndices)):
-#             f.seek(sampleIndices[i] * bytesPerLine)
-#             bytes = f.read(bytesPerLine)
-#             data[i] = np.float32(array.array('f', bytes))
-#     return ToDevice(torch.from_numpy(data))
+def ReadBinaryBatchFromFile(binaryFile, sampleIndices, featureCount):
+    bytesPerLine = featureCount * 4
+    data = np.empty([len(sampleIndices), featureCount], dtype=np.float32)
+    with open(binaryFile, "rb") as f:
+        for i in range(len(sampleIndices)):
+            f.seek(sampleIndices[i] * bytesPerLine)
+            bytes = f.read(bytesPerLine)
+            data[i] = np.float32(array.array('f', bytes))
+    return ToDevice(torch.from_numpy(data))
     # Example:
     # batchSize = 32
     # samples = 100
@@ -333,7 +332,7 @@ def SaveONNX(path, model, input_size, input_names, output_names):
     torch.onnx.export(
         model,  # model being run
         torch.randn(1, input_size),  # model input (or a tuple for multiple inputs)
-        path,  # where to save the model (can be a file or file-like object)
+        path,  # where to OutputDir the model (can be a file or file-like object)
         training=torch.onnx.TrainingMode.EVAL,
         export_params=True,  # store the trained parameter weights inside the model file
         opset_version=9,  # the ONNX version to export the model to
