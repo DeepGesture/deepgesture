@@ -3,10 +3,11 @@
 .ipynb_checkpoints
 __pycache__
 *.onnx
+*.pt
 *.bin
 
-DeepPhase/PAE/Training/*
-DeepPhase/PAE/Dataset/*
+DeepGesture/PAE/Input/*.txt
+DeepGesture/PAE/Output/*.txt
 
-DeepPhase/GNN/Data/*
-DeepPhase/GNN/Training/*
+DeepGesture/GNN/Input/*.txt
+DeepGesture/GNN/Output/*.txt
